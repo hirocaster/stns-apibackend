@@ -1,6 +1,6 @@
 resource "aws_iam_instance_profile" "instance_role" {
     name = "dynamodb-osuser-role"
-    roles = ["${aws_iam_role.instance_role.name}"]
+    role = "${aws_iam_role.instance_role.name}"
 }
 
 resource "aws_iam_role" "instance_role" {
@@ -31,7 +31,7 @@ resource "aws_iam_role_policy" "instance_role_policy" {
   "Statement": [
     {
       "Effect": "Allow",
-      "Action": [ 
+      "Action": [
 	"dynamodb:GetItem",
 	"dynamodb:Query",
 	"dynamodb:Scan"

@@ -9,6 +9,7 @@ resource "aws_api_gateway_method" "group_list" {
   resource_id = "${aws_api_gateway_resource.group_list.id}"
   http_method = "GET"
   authorization = "NONE"
+  api_key_required = "true"
 }
 
 resource "aws_api_gateway_integration" "group_list" {
@@ -19,14 +20,16 @@ resource "aws_api_gateway_integration" "group_list" {
   type = "AWS"
   uri = "arn:aws:apigateway:${var.region}:dynamodb:action/Scan"
   request_templates = {
-    "application/json" = "{
-  \"TableName\": \"${var.role}-stns-osgroup\",
-  \"Key\": {
-    \"name\": {
-      \"S\": \"$input.params().path.name\"
+    "application/json" = <<EOF
+{
+  "TableName": "${var.role}-stns-osgroup",
+  "Key": {
+    "name": {
+      "S": "$input.params().path.name"
     }
   }
-}"
+}
+EOF
   }
   passthrough_behavior = "WHEN_NO_TEMPLATES"
   depends_on = ["aws_api_gateway_method.group_list"]
@@ -49,16 +52,18 @@ resource "aws_api_gateway_integration_response" "group_list" {
   http_method = "${aws_api_gateway_method.group_list.http_method}"
   status_code = "${aws_api_gateway_method_response.group_list_200.status_code}"
   response_templates = {
-  "application/json" = "#set($inputRoot = $input.path('$'))
+  "application/json" = <<EOF
 {
-#foreach($Item in $inputRoot.Items) 
-  \"$Item.name.S\": {
-    \"id\": $Item.id.S,
-    \"users\": [ $Item.users.S ],
-    \"link_groups\": $Item.link_groups.S
+#set($inputRoot = $input.path('$'))
+#foreach($Item in $inputRoot.Items)
+  "$Item.name.S": {
+    "id": $Item.id.S,
+    "users": [ $Item.users.S ],
+    "link_groups": $Item.link_groups.S
   }
 #if($foreach.hasNext),#end
-#end"
+#end
 }
+EOF
   }
 }

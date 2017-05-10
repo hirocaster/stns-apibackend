@@ -15,7 +15,7 @@ resource "aws_dynamodb_table" "dynamo_osuser" {
       name = "id-Index"
       hash_key = "id"
       write_capacity = 1
-      read_capacity = 1
+      read_capacity = 3
       projection_type = "ALL"
     }
 }
@@ -37,7 +37,7 @@ resource "aws_dynamodb_table" "dynamo_osgroup" {
       name = "id-Index"
       hash_key = "id"
       write_capacity = 1
-      read_capacity = 1
+      read_capacity = 3
       projection_type = "ALL"
     }
 }

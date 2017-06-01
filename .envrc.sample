@@ -6,3 +6,6 @@ export AWS_DEFAULT_REGION=ap-northeast-1
 export TF_VAR_role=your-role
 export TF_VAR_region=ap-northeast-1
 export TF_VAR_state_bucket=your-bucket-name
+export TF_VAR_domain_name=example.com
+export TF_VAR_certificate_arn=arn:aws:acm:us-east-1:12345:certificate/xxxxx-xxxxx-xxxxx
+export TF_VAR_zone_id=your-domain-zone-id-in-route53

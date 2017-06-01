@@ -1,0 +1,6 @@
+terraform {
+  backend "s3" {
+    bucket = "your-backet-name"
+    key    = "stns/terraform.tfstate"
+  }
+}

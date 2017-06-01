@@ -1,3 +1,12 @@
+data "terraform_remote_state" "stns" {
+  backend = "s3"
+  config {
+    bucket = "${var.state_bucket}"
+    key    = "stns/${var.role}/terraform.tfstate"
+    region = "${var.region}"
+  }
+}
+
 resource "aws_api_gateway_rest_api" "user" {
   name = "${var.role}-stnsserver"
   description = "stns server"
